@@ -6,7 +6,7 @@
 | --------- | ------------------------ |
 | Course    | SEG 3503                 |
 | Date      | Summer 2026              |
-| Student   | Alex Turgeon             |
+| Student   | Alexandre Turgeon        |
 | Email     | aturg052@uottawa.ca      |
 | Professor |                          |
 | TA        |                          |
