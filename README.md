@@ -8,8 +8,8 @@
 | Date      | Summer 2026              |
 | Student   | Alex Turgeon             |
 | Email     | alex.turgeon@icloud.com  |
-| Professor | _(à compléter)_          |
-| TA        | _(à compléter)_          |
+| Professor |                          |
+| TA        |                          |
 
 Bac à sable pour le laboratoire 1 du cours SEG3503. Le dépôt contient deux petites
 implémentations d'une fonction de division entière :
