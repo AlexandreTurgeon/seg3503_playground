@@ -1,7 +1,5 @@
 # seg3503_playground
 
-## SEG3503 — Lab 1
-
 | Outline   | Value                    |
 | --------- | ------------------------ |
 | Course    | SEG 3503                 |
@@ -11,11 +9,15 @@
 | Professor |                          |
 | TA        |                          |
 
-Bac à sable pour le laboratoire 1 du cours SEG3503. Le dépôt contient deux petites
-implémentations d'une fonction de division entière :
+Bac à sable pour les laboratoires du cours SEG3503. Chaque laboratoire est dans son
+propre répertoire :
 
-- [`newmath_java/`](./newmath_java) — Java + JUnit 5
-- [`newmath_ex/`](./newmath_ex) — Elixir + ExUnit
+- [`lab01/`](./lab01) — Lab 1 : implémentations d'une division entière en
+  [`newmath_java/`](./lab01/newmath_java) (Java + JUnit 5) et
+  [`newmath_ex/`](./lab01/newmath_ex) (Elixir + ExUnit).
+- [`lab02/`](./lab02) — Lab 2 : classes d'équivalence — voir
+  [`lab02/README.md`](./lab02/README.md) (exercice 1 : test manuel de
+  `user-registration-app` ; exercice 2 : tests JUnit de `Date.nextDate`).
 
 Les scripts `bin/run`, `bin/test`, `bin/compile` sont des scripts **bash**. Sous
 Windows, exécutez-les depuis **Git Bash** (et non PowerShell), car ils utilisent
@@ -23,7 +25,7 @@ des séparateurs de chemin Unix.
 
 ---
 
-## newmath_java (Java + JUnit)
+## Lab 1 — newmath_java (Java + JUnit)
 
 ### Prérequis
 - JDK 11+ (testé avec OpenJDK 23)
@@ -32,7 +34,7 @@ des séparateurs de chemin Unix.
 ### Exécuter le programme interactif
 
 ```bash
-cd newmath_java
+cd lab01/newmath_java
 ./bin/run
 ```
 
@@ -42,7 +44,7 @@ la division entière, et recommence jusqu'à ce que l'on tape `exit`.
 ### Exécuter les tests JUnit
 
 ```bash
-cd newmath_java
+cd lab01/newmath_java
 ./bin/test
 ```
 
@@ -58,7 +60,7 @@ _(insérer une capture d'écran de `./bin/test` ici)_
 
 ---
 
-## newmath_ex (Elixir + ExUnit)
+## Lab 1 — newmath_ex (Elixir + ExUnit)
 
 ### Prérequis
 - Elixir 1.14+ (installe automatiquement Erlang/OTP comme dépendance)
@@ -66,7 +68,7 @@ _(insérer une capture d'écran de `./bin/test` ici)_
 ### Exécuter le programme interactif (IEx)
 
 ```bash
-cd newmath_ex
+cd lab01/newmath_ex
 ./bin/run
 ```
 
@@ -82,7 +84,7 @@ iex> NewmathEx.div(5, 0)
 ### Exécuter les tests ExUnit
 
 ```bash
-cd newmath_ex
+cd lab01/newmath_ex
 ./bin/test
 ```
 
