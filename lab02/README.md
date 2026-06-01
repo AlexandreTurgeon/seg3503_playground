@@ -69,11 +69,18 @@ classe `UserForm`). Les règles ci-dessous sont **extraites du bytecode** du `.j
 | LastName    | `@Pattern("^$|[a-zA-Z][a-zA-Z ]*")` (vide autorisé, lettres/espaces) | *Wrong LastName format*  |
 | Age         | `@NotNull`, `@Min(18)`, `@Max(64)`                               | *Age is mandatory* |
 | Email       | `@NotNull`, `@Pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$")` | *An Email address is mandatory* / *Wrong Email format* |
-| City        | menu déroulant {Cornwall, Gatineau, Kingston, Ottawa, Toronto} — **aucune** annotation de validation | — |
+| City        | menu déroulant {Ottawa, Toronto, Montreal, Halifax} — **aucune** annotation de validation | — |
 | Postal Code | `@Pattern("^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$")` — majuscules, espace **optionnel**, lettres `D F I O Q U` interdites, 1re lettre ∈ A–V,X,Y | *Wrong Postal Code format* |
 
-- **Acceptation** → page « *Congratulations … You are now a member of our site...* ».
-- **Rejet** → le formulaire est réaffiché avec le(s) message(s) d'erreur.
+- **Acceptation** → l'application redirige (HTTP 302) vers `/results` :
+  « *Congratulations … You are now a member of our site...* ».
+- **Rejet** → le formulaire est réaffiché (HTTP 200) avec le(s) message(s) d'erreur en
+  rouge à côté du champ fautif.
+
+> Note : pour certaines contraintes, le message affiché à l'écran provient du validateur
+> par défaut plutôt que de l'attribut `message` de l'annotation — p. ex. `@Min/@Max`
+> affichent *« must be greater/less than or equal to … »*, et un âge non numérique
+> déclenche une erreur de conversion de type (`NumberFormatException`) avant la validation.
 
 **Entrée de référence (toutes valeurs valides)** :
 `userName=johndoe, firstName=John, lastName=Doe, email=john@example.com, age=30, city=Ottawa, postalCode=K1N 6N5`.
@@ -82,38 +89,37 @@ Chaque cas ci-dessous ne fait varier **qu'un seul champ** par rapport à cette b
 ### Classes d'équivalence et cas de test
 
 > Colonne **« Résultats Escomptés »** = comportement déduit des contraintes ci-dessus.
-> Colonnes **« Résultats Actuels »** / **« Verdict »** = à remplir en testant chaque cas
-> **dans le navigateur** (`http://localhost:8080/`) et en joignant la capture d'écran.
-> Renseignez « Accepté » / « Rejeté » + le message d'erreur affiché, puis le verdict
-> (*Succès* si l'observé correspond à l'attendu, sinon *Échec*).
+> Colonnes **« Résultats Actuels »** / **« Verdict »** = comportement **observé** en
+> exécutant l'application (Java 23, `--add-opens`) et en envoyant chaque cas sur `/` :
+> *Accepté* = redirection HTTP 302 vers `/results` ; *Rejeté* = HTTP 200 avec message
+> d'erreur. Verdict = *Succès* si l'observé correspond à l'attendu, sinon *Échec*.
 
-| Cas | Champ — classe d'équivalence                 | Entrée (champ modifié) | Résultats Escomptés                    | Résultats Actuels | Verdict |
-| --- | --------------------------------------------- | ---------------------- | -------------------------------------- | ----------------- | ------- |
-| TC01 | (base) toutes valeurs valides                | —                      | Accepté                                | _(à remplir)_     | _( )_   |
-| TC02 | UserName — trop court (< 6)                   | `john1`                | Rejeté (*Size of UserName must be between 6 and 12*) | _(à remplir)_ | _( )_ |
-| TC03 | UserName — trop long (> 12)                   | `johndoe123456`        | Rejeté (*Size of UserName must be between 6 and 12*) | _(à remplir)_ | _( )_ |
-| TC04 | UserName — longueur valide (borne 6)         | `johnny`               | Accepté                                | _(à remplir)_     | _( )_   |
-| TC05 | UserName — format invalide (début chiffre)   | `1johndoe`             | Rejeté (*Wrong UserName format*)        | _(à remplir)_     | _( )_   |
-| TC06 | UserName — vide                              | `` (vide)              | Rejeté (*UserName is mandatory*)        | _(à remplir)_     | _( )_   |
-| TC07 | Age — sous la borne (< 18)                    | `17`                   | Rejeté (`@Min(18)`)                     | _(à remplir)_     | _( )_   |
-| TC08 | Age — borne basse valide                      | `18`                   | Accepté                                | _(à remplir)_     | _( )_   |
-| TC09 | Age — borne haute valide                      | `64`                   | Accepté                                | _(à remplir)_     | _( )_   |
-| TC10 | Age — au-dessus de la borne (> 64)           | `65`                   | Rejeté (`@Max(64)`)                     | _(à remplir)_     | _( )_   |
-| TC11 | Age — non numérique                           | `abc`                  | Rejeté (conversion de type échoue)      | _(à remplir)_     | _( )_   |
-| TC12 | Email — sans `@`                              | `johnexample.com`      | Rejeté (*Wrong Email format*)           | _(à remplir)_     | _( )_   |
-| TC13 | Email — sans domaine de 1er niveau           | `john@example`         | Rejeté (*Wrong Email format*)           | _(à remplir)_     | _( )_   |
-| TC14 | Email — valide (autre forme)                 | `j.doe@mail.co`        | Accepté                                | _(à remplir)_     | _( )_   |
-| TC15 | Postal — avec espace                          | `K1N 6N5`              | Accepté                                | _(à remplir)_     | _( )_   |
-| TC16 | Postal — sans espace (séparateur optionnel)  | `K1N6N5`               | Accepté                                | _(à remplir)_     | _( )_   |
-| TC17 | Postal — minuscules                          | `k1n 6n5`              | Rejeté (*Wrong Postal Code format*)     | _(à remplir)_     | _( )_   |
-| TC18 | Postal — lettre interdite en tête (`D`)      | `D1N 6N5`              | Rejeté (*Wrong Postal Code format*)     | _(à remplir)_     | _( )_   |
-| TC19 | Postal — format invalide                     | `12345`                | Rejeté (*Wrong Postal Code format*)     | _(à remplir)_     | _( )_   |
-| TC20 | City — hors de la liste (POST forgé)         | `Laval`                | Rejeté (ville hors liste autorisée)     | _(à remplir)_     | _( )_   |
+| Cas | Champ — classe d'équivalence                 | Entrée (champ modifié) | Résultats Escomptés                    | Résultats Actuels                                  | Verdict |
+| --- | --------------------------------------------- | ---------------------- | -------------------------------------- | -------------------------------------------------- | ------- |
+| TC01 | (base) toutes valeurs valides                | —                      | Accepté                                | Accepté (302 → /results)                           | Succès |
+| TC02 | UserName — trop court (< 6)                   | `john1`                | Rejeté (*Size 6 à 12*)                  | Rejeté — *Size of UserName must be between 6 and 12* | Succès |
+| TC03 | UserName — trop long (> 12)                   | `johndoe123456`        | Rejeté (*Size 6 à 12*)                  | Rejeté — *Size of UserName must be between 6 and 12* | Succès |
+| TC04 | UserName — longueur valide (borne 6)         | `johnny`               | Accepté                                | Accepté (302 → /results)                           | Succès |
+| TC05 | UserName — format invalide (début chiffre)   | `1johndoe`             | Rejeté (*Wrong UserName format*)        | Rejeté — *Wrong UserName format*                   | Succès |
+| TC06 | UserName — vide                              | `` (vide)              | Rejeté (champ requis)                   | Rejeté — *Size…* + *Wrong UserName format*         | Succès |
+| TC07 | Age — sous la borne (< 18)                    | `17`                   | Rejeté (`@Min(18)`)                     | Rejeté — *must be greater than or equal to 18*     | Succès |
+| TC08 | Age — borne basse valide                      | `18`                   | Accepté                                | Accepté (302 → /results)                           | Succès |
+| TC09 | Age — borne haute valide                      | `64`                   | Accepté                                | Accepté (302 → /results)                           | Succès |
+| TC10 | Age — au-dessus de la borne (> 64)           | `65`                   | Rejeté (`@Max(64)`)                     | Rejeté — *must be less than or equal to 64*        | Succès |
+| TC11 | Age — non numérique                           | `abc`                  | Rejeté (type invalide)                  | Rejeté — *Failed to convert … NumberFormatException* | Succès |
+| TC12 | Email — sans `@`                              | `johnexample.com`      | Rejeté (*Wrong Email format*)           | Rejeté — *Wrong Email format*                      | Succès |
+| TC13 | Email — sans domaine de 1er niveau           | `john@example`         | Rejeté (*Wrong Email format*)           | Rejeté — *Wrong Email format*                      | Succès |
+| TC14 | Email — valide (autre forme)                 | `j.doe@mail.co`        | Accepté                                | Accepté (302 → /results)                           | Succès |
+| TC15 | Postal — avec espace                          | `K1N 6N5`              | Accepté                                | Accepté (302 → /results)                           | Succès |
+| TC16 | Postal — sans espace (séparateur optionnel)  | `K1N6N5`               | Accepté                                | Accepté (302 → /results)                           | Succès |
+| TC17 | Postal — minuscules                          | `k1n 6n5`              | Rejeté (*Wrong Postal Code format*)     | Rejeté — *Wrong Postal Code format*                | Succès |
+| TC18 | Postal — lettre interdite en tête (`D`)      | `D1N 6N5`              | Rejeté (*Wrong Postal Code format*)     | Rejeté — *Wrong Postal Code format*                | Succès |
+| TC19 | Postal — format invalide                     | `12345`                | Rejeté (*Wrong Postal Code format*)     | Rejeté — *Wrong Postal Code format*                | Succès |
+| TC20 | City — hors de la liste (POST forgé)         | `Laval`                | Rejeté (ville hors liste autorisée)     | **Accepté (302 → /results)**                       | **Échec** |
 
-> ⚠️ Les « Résultats Escomptés » découlent de l'analyse statique des contraintes
-> `UserForm`. Confirmez-les au navigateur — le champ **City** notamment n'a aucune
-> validation serveur (voir défauts ci-dessous), donc **TC20** est susceptible d'être
-> *accepté* malgré l'attente, ce qui constituerait un défaut à documenter.
+**Bilan : 19/20 en Succès.** Le seul **Échec**, TC20, est un *vrai défaut* : la ville
+`Laval` (hors de la liste {Ottawa, Toronto, Montreal, Halifax}) est acceptée car le champ
+`city` n'a aucune validation côté serveur (voir ci-dessous).
 
 ### Défauts révélés par l'analyse / le test
 
@@ -126,12 +132,15 @@ Chaque cas ci-dessous ne fait varier **qu'un seul champ** par rapport à cette b
 
 ### Captures d'écran
 
-> À capturer dans le navigateur (`http://localhost:8080/`) — déposez les images dans
-> [`assets/`](./assets) puis dé-commentez les lignes ci-dessous.
+**Rejet — UserName trop court** (`AlexTT`, 5 caractères) : le formulaire est réaffiché
+avec le message *« Size of UserName must be between 6 and 12 »* (cf. TC02).
 
-<!-- ![TC01 — toutes valeurs valides, accepté](assets/tc01.png) -->
-<!-- ![TC06 — UserName vide, rejeté](assets/tc06.png) -->
-<!-- ![TC20 — ville hors liste (défaut)](assets/tc20.png) -->
+![Formulaire avec erreur de validation sur UserName](assets/Screenshot1.png)
+
+**Acceptation — toutes les valeurs valides** : redirection vers `/results` affichant
+« *Congratulations Alexandre Turgeon!. You are now a member of our site..* » (cf. TC01).
+
+![Page de confirmation après une inscription valide](assets/Screenshot2.png)
 
 ---
 
