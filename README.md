@@ -6,8 +6,8 @@
 | Date      | Summer 2026              |
 | Student   | Alexandre Turgeon        |
 | Email     | aturg052@uottawa.ca      |
-| Professor |                          |
-| TA        |                          |
+| Professor | Mouhcine Guennoun        |
+| TA        | Mohamed Nefsi            |
 
 Bac à sable pour les laboratoires du cours SEG3503. Chaque laboratoire est dans son
 propre répertoire :
@@ -52,11 +52,11 @@ Deux tests sont attendus : `div_ok()` et `div_by_zero()`.
 
 ### Capture d'écran — Java run
 
-_(insérer une capture d'écran de `./bin/run` ici)_
+![Exécution de ./bin/run pour newmath_java](assets/Javarun.png)
 
 ### Capture d'écran — Java test (JUnit)
 
-_(insérer une capture d'écran de `./bin/test` ici)_
+![Exécution de ./bin/test pour newmath_java](assets/JavaTest.png)
 
 ---
 
@@ -92,8 +92,8 @@ Trois assertions sont attendues : 1 doctest + 2 tests.
 
 ### Capture d'écran — Elixir run
 
-_(insérer une capture d'écran de `./bin/run` ici)_
+![Exécution de ./bin/run pour newmath_ex](assets/ElixirRun.png)
 
 ### Capture d'écran — Elixir test (ExUnit)
 
-_(insérer une capture d'écran de `./bin/test` ici)_
+![Exécution de ./bin/test pour newmath_ex](assets/ElixirTest.png)

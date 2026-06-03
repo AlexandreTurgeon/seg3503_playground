@@ -6,8 +6,8 @@
 | Date      | Summer 2026              |
 | Student   | Alexandre Turgeon        |
 | Email     | aturg052@uottawa.ca      |
-| Professor |                          |
-| TA        |                          |
+| Professor | Mouhcine Guennoun        |
+| TA        | Mohamed Nefsi            |
 
 Ce répertoire contient le travail du laboratoire 2, organisé en deux projets :
 
@@ -204,5 +204,3 @@ Les **59 tests passent** (vérifié sur Java 23) : `DateTest` (sample + tc01..tc
 [        59 tests successful      ]
 [         0 tests failed          ]
 ```
-
-> Capture d'écran de l'exécution à ajouter : `![Exécution des tests](assets/tests.png)`.
