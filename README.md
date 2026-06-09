@@ -18,6 +18,8 @@ propre répertoire :
 - [`lab02/`](./lab02) — Lab 2 : classes d'équivalence — voir
   [`lab02/README.md`](./lab02/README.md) (exercice 1 : test manuel de
   `user-registration-app` ; exercice 2 : tests JUnit de `Date.nextDate`).
+- [`lab03/`](./lab03) — Lab 3 : mesures de couverture avec JaCoCo — voir
+  [`lab03/README.md`](./lab03/README.md) (projets `date` et `computation`).
 
 Les scripts `bin/run`, `bin/test`, `bin/compile` sont des scripts **bash**. Sous
 Windows, exécutez-les depuis **Git Bash** (et non PowerShell), car ils utilisent
